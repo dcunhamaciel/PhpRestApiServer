@@ -22,10 +22,7 @@ class StudentController extends Controller
   
     public function createStudent(Request $request): JsonResponse
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'course' => 'required|string',
-        ]);
+        $this->validateRequest($request);
         
         $student = new Student;
         $student->name = $request->name;
@@ -48,10 +45,7 @@ class StudentController extends Controller
   
     public function updateStudent(Request $request, int $id): JsonResponse
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'course' => 'required|string',
-        ]);
+        $this->validateRequest($request);
         
         $student = Student::find($id);
 
@@ -77,5 +71,20 @@ class StudentController extends Controller
         $student->delete();
 
         return response()->json(["message" => "Student deleted"], Response::HTTP_ACCEPTED);        
+    }
+
+    private function validateRequest(Request $request): void {
+        $rules = [
+            'name' => 'required|max:60',
+            'course' => 'required|max:60'
+        ];
+        
+        $feedback = [
+            'required' => 'O campo :attribute é obrigatório',
+            'name.max' => 'O campo name deve ter no máximo 60 caracteres',
+            'course.max' => 'O campo course deve ter no máximo 60 caracteres'
+        ];
+
+        $request->validate($rules, $feedback);
     }
 }
