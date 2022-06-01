@@ -13,7 +13,6 @@ class StudentController extends Controller
     {
         $students = Student::orderBy('id')->get();
 
-        // quando retornar vazio podemos retornar um 204 (NO_CONTENT)
         $httpStatusCode = empty($students) 
             ? Response::HTTP_NO_CONTENT 
             : Response::HTTP_OK;
@@ -44,7 +43,7 @@ class StudentController extends Controller
             return response()->json(["message" => "Student not found"], Response::HTTP_NOT_FOUND);
         }
 
-        return response($student->toJson(JSON_PRETTY_PRINT), Response::HTTP_OK);
+        return response()->json($student, Response::HTTP_OK);
     }
   
     public function updateStudent(Request $request, int $id): JsonResponse
