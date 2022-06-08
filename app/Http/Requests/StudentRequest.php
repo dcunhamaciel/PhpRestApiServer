@@ -34,7 +34,7 @@ class StudentRequest extends FormRequest
      *
      * @return array
      */    
-    public function messages()
+    public function messages(): array
     {
         return [
             'required' => 'The field :attribute is required',
