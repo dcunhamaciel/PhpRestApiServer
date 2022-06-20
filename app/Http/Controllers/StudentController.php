@@ -73,7 +73,7 @@ class StudentController extends Controller
         return response()->json(["message" => "Student deleted"], Response::HTTP_ACCEPTED);        
     }
 
-    private function validateRequest(Request $request): void 
+    public function validateRequest(Request $request): void 
     {
         $rules = [
             'name' => 'required|string|max:60',
