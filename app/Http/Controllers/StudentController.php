@@ -68,4 +68,22 @@ class StudentController extends Controller
 
         return response()->json(["message" => "Student deleted"], Response::HTTP_ACCEPTED);        
     }
+
+    public function validateRequest(Request $request): void 
+    {
+        $rules = [
+            'name' => 'required|string|max:60',
+            'course' => 'required|string|max:60'
+        ];
+        
+        $feedback = [
+            'required' => 'O campo :attribute é obrigatório',
+            'name.max' => 'O campo name deve ter no máximo 60 caracteres',
+            'course.max' => 'O campo course deve ter no máximo 60 caracteres',
+            'name.string' => 'O campo name deve ser string',
+            'course.string' => 'O campo course deve ser string'
+        ];
+
+        $request->validate($rules, $feedback);
+    }
 }
