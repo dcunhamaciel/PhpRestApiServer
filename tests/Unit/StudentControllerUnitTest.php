@@ -37,6 +37,32 @@ class StudentControllerUnitTest extends TestCase
     /**
      * @return void
      */
+    public function testValidateRequestMissingNameFailureFlow(): void
+    {
+        $fakeRequest = new Request([
+            'course' => 'Arqueologia',
+        ]);
+
+        $this->expectExceptionMessage('The field name is required');
+        $this->studentControllerInstance->validateRequest($fakeRequest);
+    }
+
+    /**
+     * @return void
+     */
+    public function testValidateRequestMissingCourseFailureFlow(): void
+    {
+        $fakeRequest = new Request([
+            'name' => 'Lara Croft',
+        ]);
+
+        $this->expectExceptionMessage('The field course is required');
+        $this->studentControllerInstance->validateRequest($fakeRequest);
+    }
+    
+    /**
+     * @return void
+     */
     public function testValidateRequestNameExceededMaxLengthFailureFlow(): void
     {
         $fakeRequest = new Request([
@@ -44,7 +70,7 @@ class StudentControllerUnitTest extends TestCase
             'course' => 'Arqueologia',
         ]);
 
-        $this->expectExceptionMessage('O campo name deve ter no máximo 60 caracteres');
+        $this->expectExceptionMessage('The field name must have at most 60 characters');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }    
 
@@ -58,24 +84,10 @@ class StudentControllerUnitTest extends TestCase
             'course' => 'Arqueologiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         ]);
 
-        $this->expectExceptionMessage('O campo course deve ter no máximo 60 caracteres');
+        $this->expectExceptionMessage('The field course must have at most 60 characters');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }   
-
-    /**
-     * @return void
-     */
-    public function testValidateRequestMissingNameFailureFlow(): void
-    {
-        $fakeRequest = new Request([
-            'course' => 'Arqueologia',
-        ]);
-
-        $this->expectExceptionMessage('O campo name é obrigatório');
-        $this->studentControllerInstance->validateRequest($fakeRequest);
-    }
-
-
+      
     /**
      * @return void
      */
@@ -86,7 +98,7 @@ class StudentControllerUnitTest extends TestCase
             'course' => 'Arqueologia',
         ]);
 
-        $this->expectExceptionMessage('O campo name deve ser string');
+        $this->expectExceptionMessage('The field name must be string');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }       
 
@@ -100,21 +112,7 @@ class StudentControllerUnitTest extends TestCase
             'course' => 0,
         ]);
 
-        $this->expectExceptionMessage('O campo course deve ser string');
+        $this->expectExceptionMessage('The field course must be string');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }      
-
-
-    /**
-     * @return void
-     */
-    public function testValidateRequestMissingCourseFailureFlow(): void
-    {
-        $fakeRequest = new Request([
-            'name' => 'Lara Croft',
-        ]);
-
-        $this->expectExceptionMessage('O campo course é obrigatório');
-        $this->studentControllerInstance->validateRequest($fakeRequest);
-    }    
 }
