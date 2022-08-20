@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Http\Controllers\StudentController;
+use App\Http\Requests\StudentRequest;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class StudentControllerUnitTest extends TestCase
@@ -24,7 +24,7 @@ class StudentControllerUnitTest extends TestCase
      */
     public function testValidateRequestSuccessFlow(): void
     {
-        $fakeRequest = new Request([
+        $fakeRequest = new StudentRequest([
             'name' => 'Lara Croft',
             'course' => 'Arqueologia',
         ]);
@@ -39,11 +39,11 @@ class StudentControllerUnitTest extends TestCase
      */
     public function testValidateRequestMissingNameFailureFlow(): void
     {
-        $fakeRequest = new Request([
+        $fakeRequest = new StudentRequest([
             'course' => 'Arqueologia',
         ]);
 
-        $this->expectExceptionMessage('The field name is required');
+        $this->expectExceptionMessage('O campo name é obrigatório');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }
 
@@ -52,11 +52,11 @@ class StudentControllerUnitTest extends TestCase
      */
     public function testValidateRequestMissingCourseFailureFlow(): void
     {
-        $fakeRequest = new Request([
+        $fakeRequest = new StudentRequest([
             'name' => 'Lara Croft',
         ]);
 
-        $this->expectExceptionMessage('The field course is required');
+        $this->expectExceptionMessage('O campo course é obrigatório');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }
     
@@ -65,12 +65,12 @@ class StudentControllerUnitTest extends TestCase
      */
     public function testValidateRequestNameExceededMaxLengthFailureFlow(): void
     {
-        $fakeRequest = new Request([
+        $fakeRequest = new StudentRequest([
             'name' => 'Lara Croftttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt',
             'course' => 'Arqueologia',
         ]);
 
-        $this->expectExceptionMessage('The field name must have at most 60 characters');
+        $this->expectExceptionMessage('O campo name deve ter no máximo 60 caracteres');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }    
 
@@ -79,12 +79,12 @@ class StudentControllerUnitTest extends TestCase
      */
     public function testValidateRequestCourseExceededMaxLengthFailureFlow(): void
     {
-        $fakeRequest = new Request([
+        $fakeRequest = new StudentRequest([
             'name' => 'Lara Croft',
             'course' => 'Arqueologiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         ]);
 
-        $this->expectExceptionMessage('The field course must have at most 60 characters');
+        $this->expectExceptionMessage('O campo course deve ter no máximo 60 caracteres');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }   
       
@@ -93,12 +93,12 @@ class StudentControllerUnitTest extends TestCase
      */
     public function testValidateRequestNameWithInvalidTypeFailureFlow(): void
     {
-        $fakeRequest = new Request([
+        $fakeRequest = new StudentRequest([
             'name' => 123,
             'course' => 'Arqueologia',
         ]);
 
-        $this->expectExceptionMessage('The field name must be string');
+        $this->expectExceptionMessage('O campo name deve ser string');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }       
 
@@ -107,12 +107,12 @@ class StudentControllerUnitTest extends TestCase
      */
     public function testValidateRequestCourseWithInvalidTypeFailureFlow(): void
     {
-        $fakeRequest = new Request([
+        $fakeRequest = new StudentRequest([
             'name' => 'Lara Croft',
             'course' => 0,
         ]);
 
-        $this->expectExceptionMessage('The field course must be string');
+        $this->expectExceptionMessage('O campo course deve ser string');
         $this->studentControllerInstance->validateRequest($fakeRequest);
     }      
 }
